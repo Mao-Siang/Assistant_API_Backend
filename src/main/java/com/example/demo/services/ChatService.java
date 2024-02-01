@@ -10,7 +10,6 @@ import com.theokanning.openai.runs.RunCreateRequest;
 import com.theokanning.openai.service.OpenAiService;
 import com.theokanning.openai.threads.Thread;
 import com.theokanning.openai.threads.ThreadRequest;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,8 @@ public class ChatService {
 
     @Autowired
     public ChatService() {
-        this.service = new OpenAiService(this.getApi_token());
+        String token = "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";
+        this.service = new OpenAiService(token);
         // Default Assistant
         this.assistantId = "asst_OGMgaJlHHgoqXuny8LqDVWYn";
     }
@@ -47,7 +47,7 @@ public class ChatService {
         return thread.getId();
     }
 
-    public String sendMessageToThread(String threadId, String content, String assistantId) {
+    public List<Message> sendMsgToThreadAndRun(String threadId, String content, String assistantId) {
         // Add message to thread by threadId and create run with assistantId
         if (threadId.isEmpty()) threadId = this.createThread();
 
@@ -57,7 +57,7 @@ public class ChatService {
 
         threadId = this.createRunOnThread(threadId, assistantId);
 
-        return threadId;
+        return this.getAllMessages(threadId);
     }
 
     public String createRunOnThread(String threadId, String assistantId) {
@@ -81,7 +81,7 @@ public class ChatService {
     }
 
     public String getApi_token() {
-        return api_token;
+        return this.api_token;
     }
 
     public void setAssistantId(String assistantId) {
