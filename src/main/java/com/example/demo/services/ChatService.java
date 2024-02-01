@@ -29,7 +29,7 @@ public class ChatService {
 
     @Autowired
     public ChatService() {
-        String token = "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";
+        String token = "";
         this.service = new OpenAiService(token);
         // Default Assistant
         this.assistantId = "asst_OGMgaJlHHgoqXuny8LqDVWYn";
